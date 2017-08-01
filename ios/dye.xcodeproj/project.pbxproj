@@ -38,6 +38,8 @@
 		CA5A11B74AC1410AAEC5D6B4 /* libRealmReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0471AA9A12C148CAB5AFD7D8 /* libRealmReact.a */; };
 		82B6F17A05E6482E9E3C5BB6 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A9C428D30AA44699AB3E4423 /* libc++.tbd */; };
 		C7FA9E2832F343FCA584497F /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C109D5012CF43B6A242BAEE /* libz.tbd */; };
+		6877BB605E7E47D8A3B62945 /* libKCKeepAwake.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5440035750CE4B86998BFF9D /* libKCKeepAwake.a */; };
+		3177ED5729234DCBA8E4BFCF /* libKeepScreenOn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C53C38C0DC34D34B8791E0C /* libKeepScreenOn.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -261,6 +263,10 @@
 		0471AA9A12C148CAB5AFD7D8 /* libRealmReact.a */ = {isa = PBXFileReference; name = "libRealmReact.a"; path = "libRealmReact.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		A9C428D30AA44699AB3E4423 /* libc++.tbd */ = {isa = PBXFileReference; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = sourcecode.text-based-dylib-definition; explicitFileType = undefined; includeInIndex = 0; };
 		2C109D5012CF43B6A242BAEE /* libz.tbd */ = {isa = PBXFileReference; name = "libz.tbd"; path = "usr/lib/libz.tbd"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = sourcecode.text-based-dylib-definition; explicitFileType = undefined; includeInIndex = 0; };
+		998A929DACEE4281B130303F /* KCKeepAwake.xcodeproj */ = {isa = PBXFileReference; name = "KCKeepAwake.xcodeproj"; path = "../node_modules/react-native-keep-awake/ios/KCKeepAwake.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		5440035750CE4B86998BFF9D /* libKCKeepAwake.a */ = {isa = PBXFileReference; name = "libKCKeepAwake.a"; path = "libKCKeepAwake.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		7C9BA9008E2245A699717D9B /* KeepScreenOn.xcodeproj */ = {isa = PBXFileReference; name = "KeepScreenOn.xcodeproj"; path = "../node_modules/react-native-keep-screen-on/ios/KeepScreenOn.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		5C53C38C0DC34D34B8791E0C /* libKeepScreenOn.a */ = {isa = PBXFileReference; name = "libKeepScreenOn.a"; path = "libKeepScreenOn.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -290,6 +296,8 @@
 				CA5A11B74AC1410AAEC5D6B4 /* libRealmReact.a in Frameworks */,
 				82B6F17A05E6482E9E3C5BB6 /* libc++.tbd in Frameworks */,
 				C7FA9E2832F343FCA584497F /* libz.tbd in Frameworks */,
+				6877BB605E7E47D8A3B62945 /* libKCKeepAwake.a in Frameworks */,
+				3177ED5729234DCBA8E4BFCF /* libKeepScreenOn.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -457,6 +465,8 @@
 				00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */,
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				C1BF66FF22CF467C8D41E42D /* RealmReact.xcodeproj */,
+				998A929DACEE4281B130303F /* KCKeepAwake.xcodeproj */,
+				7C9BA9008E2245A699717D9B /* KeepScreenOn.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -996,10 +1006,14 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/realm/src/**",
+					"$(SRCROOT)/../node_modules/react-native-keep-awake/ios",
+					"$(SRCROOT)/../node_modules/react-native-keep-screen-on/ios/KeepScreenOn",
 				);
 			};
 			name = Debug;
@@ -1021,10 +1035,14 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/realm/src/**",
+					"$(SRCROOT)/../node_modules/react-native-keep-awake/ios",
+					"$(SRCROOT)/../node_modules/react-native-keep-screen-on/ios/KeepScreenOn",
 				);
 			};
 			name = Release;
@@ -1047,6 +1065,8 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/realm/src/**",
+					"$(SRCROOT)/../node_modules/react-native-keep-awake/ios",
+					"$(SRCROOT)/../node_modules/react-native-keep-screen-on/ios/KeepScreenOn",
 				);
 			};
 			name = Debug;
@@ -1068,6 +1088,8 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/realm/src/**",
+					"$(SRCROOT)/../node_modules/react-native-keep-awake/ios",
+					"$(SRCROOT)/../node_modules/react-native-keep-screen-on/ios/KeepScreenOn",
 				);
 			};
 			name = Release;
@@ -1098,10 +1120,14 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/realm/src/**",
+					"$(SRCROOT)/../node_modules/react-native-keep-awake/ios",
+					"$(SRCROOT)/../node_modules/react-native-keep-screen-on/ios/KeepScreenOn",
 				);
 			};
 			name = Debug;
@@ -1132,10 +1158,14 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/realm/src/**",
+					"$(SRCROOT)/../node_modules/react-native-keep-awake/ios",
+					"$(SRCROOT)/../node_modules/react-native-keep-screen-on/ios/KeepScreenOn",
 				);
 			};
 			name = Release;
@@ -1161,6 +1191,8 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 			};
 			name = Debug;
@@ -1185,6 +1217,8 @@
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 			};

@@ -12,6 +12,7 @@ const windowSize = Dimensions.get('window');
 import Databases from '../realmDB/databases';
 import * as Firebase from 'firebase'
 import {observer} from 'mobx-react/native';
+import Color from '../const/colors'
 @observer
 export default class RoomMain extends Component {
   render() {
@@ -37,7 +38,7 @@ export default class RoomMain extends Component {
 const styles = StyleSheet.create({
   container: {flex: 1,backgroundColor: '#FFF',},
   content:{flex:1,justifyContent: 'center',alignItems: 'center'},
-  header:{height:50,width:windowSize.width,backgroundColor:'#9b59b6',flexDirection:'row'},
+  header:{height:50,width:windowSize.width,backgroundColor:Color.darkBlue,flexDirection:'row'},
   headerLeft:{flex:1,justifyContent:'center',alignItems:'center'},
   headerMiddle:{flex:4,justifyContent:'center',alignItems:'center'},
   headerRigth:{flex:1,justifyContent:'center',alignItems:'center'},

@@ -7,11 +7,13 @@ import {
   View,
   TouchableOpacity,
   Alert,
-  TextInput
+  TextInput,
+  StatusBar
 } from 'react-native';
 import {StackNavigator} from 'react-navigation'
 import * as Firebase from 'firebase'
 import Databases from './realmDB/databases'
+import Color from './const/colors'
 import UserStore from './stores/user'
 import {observer} from 'mobx-react/native';
 @observer
@@ -19,8 +21,9 @@ export default class Login extends Component {
   constructor(props) {
     super(props);
     this.state={
+      username:'',
+      password:'',
       email:'',
-      password:''
     }
     this.routing = this.routing.bind(this)
   }
@@ -34,20 +37,17 @@ export default class Login extends Component {
    UserStore.displayName = displayName
   }
   createUser(){
-    if(this.state.username != "" && this.state.password != ""){
+    if(this.state.email != "" && this.state.password != "" && this.state.username != ""){
+      UserStore.displayName = this.state.username
       email = this.state.email
       password = this.state.password
       const navigation = this.props.navigation
       var p = new Promise(function(resolve, reject) {
   	    var error = false
         Firebase.auth().createUserWithEmailAndPassword(email, password).then(function(data){
-          if(!error) {
-            resolve('Success!');
-          }
-          else {
-            Alert.alert('Error','Already exist email')
-            reject('Failure!');
-          }
+          //console.log(data)
+          resolve('Success!');
+
         }).catch(function(error) {
           error = true
           if(!error) {
@@ -61,34 +61,17 @@ export default class Login extends Component {
         });
       });
       p.then(function() {
-        setTimeout(function(){
+
           Firebase.auth().signInWithEmailAndPassword(email, password).then(function(data){
-            //Alert.alert('Success',data.uid.toString())
-            let displayName = ""
-            let photoURL = ""
-
-            let userInfoDatabase = Databases.objects('UserInfoDB')
-            Databases.write(()=>{
-              Databases.create('UserInfoDB',{
-                uid:data.uid,
-                displayName:displayName,
-                photoURL:photoURL,
-                email:email,
-                password:password,
-              })
-
-            })
-            this.fillUserStore(data.uid,email,displayName)
-            navigation.navigate('home')
 
           }).catch(function(error) {
-            Alert.alert('',JSON.stringify(error))
+            Alert.alert('ERROR1',JSON.stringify(error))
           });
 
-        }, 4000)
 
-      }).catch(function() {
-      	Alert.alert('',JSON.stringify(error))
+
+      }).catch(function(error) {
+      	Alert.alert('ERROR2',JSON.stringify(error))
       })
     }
 
@@ -100,32 +83,48 @@ export default class Login extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to Login!
-        </Text>
-        <TouchableOpacity onPress={() =>this.routing() }>
-          <Text>Play!</Text>
-        </TouchableOpacity>
-        <TextInput style={styles.textInput} underlineColorAndroid={'white'} onChangeText={(text) => this.setState({email:text})} placeholder="username" />
-        <TextInput style={styles.textInput} underlineColorAndroid={'white'} onChangeText={(text) => this.setState({password:text})} />
-        <TouchableOpacity onPress={() =>this.createUser() }>
-          <Text>Create User!</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() =>this.testRealmDB()}>
-          <Text>Test Realm DB!</Text>
-        </TouchableOpacity>
+        <StatusBar
+          backgroundColor= {Color.statusBarColor}
+          barStyle="light-content"
+        />
+        <View style={styles.topView}>
+          <Text style={styles.h1}>Wordy</Text>
+        </View>
+        <View style={styles.middleView}>
+          <View style={styles.textInputView}>
+            <TextInput style={styles.textInput} underlineColorAndroid={Color.lightBlue} placeholderTextColor={'#FFF'} onChangeText={(text) => this.setState({username:text})} placeholder="username" />
+          </View>
+          <View style={styles.textInputView}>
+            <TextInput style={styles.textInput} underlineColorAndroid={Color.lightBlue} placeholderTextColor={'#FFF'} onChangeText={(text) => this.setState({password:text})} placeholder="password" />
+          </View>
+          <View style={styles.textInputView}>
+            <TextInput style={styles.textInput} underlineColorAndroid={Color.lightBlue} placeholderTextColor={'#FFF'} onChangeText={(text) => this.setState({email:text})} placeholder="email" />
+          </View>
+          <TouchableOpacity style={styles.loginButton} onPress={() =>this.createUser() }>
+            <Text style={styles.loginButtonText}>Login</Text>
+          </TouchableOpacity>
+        </View>
+
+
+
+
+        <View style={styles.bottomView}>
+
+        </View>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  textInput:{width:250,height:50,borderWidth:0.5,borderColor:'#A0A0A0'}
+  container: {flex: 1,justifyContent: 'center',alignItems: 'center',backgroundColor: Color.darkBlue,},
+  h1:{fontSize:18,fontSize:25,color:Color.white,fontWeight:'bold'},
+  topView:{flex:1,justifyContent:'center',alignItems:'center'},
+  middleView:{flex:2,justifyContent:'center',alignItems:'center'},
+  bottomView:{flex:1,justifyContent:'center',alignItems:'center'},
+  textInput:{width:250,height:50,color:'#FFF',fontWeight:'bold'},
+  textInputView:{height:50,width:275,justifyContent:'center',alignItems:'center',backgroundColor:Color.lightBlue,marginBottom:10},
+  loginButton:{height:45,width:275,borderRadius:25,backgroundColor:Color.white,justifyContent:'center',alignItems:'center',marginTop:10},
+  loginButtonText:{fontWeight:'bold',fontSize:18,color:Color.darkBlue}
 
 });

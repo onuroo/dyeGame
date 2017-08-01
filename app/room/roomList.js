@@ -23,6 +23,7 @@ import UserStore from '../stores/user'
 import BoardStore from '../stores/board';
 import * as Firebase from 'firebase'
 import {observer} from 'mobx-react/native';
+import Color from '../const/colors'
 @observer
 export default class RoomList extends Component {
   constructor(props) {
@@ -54,6 +55,9 @@ export default class RoomList extends Component {
         })
 
       })
+      if(list.length == 0 ){
+        UserStore.joinedRoom = ""
+      }
       RoomStore.joinedRoomList = list
     })
   }
@@ -70,6 +74,7 @@ export default class RoomList extends Component {
               creatorUID:detail.val().uid,
               creatorDisplayName:detail.val().displayName,
               creatorEmail:detail.val().email,
+              roomTitle:detail.val().roomTitle,
               key:data.key
             })
             //Alert.alert(data.key.toString(),JSON.stringify(detail))
@@ -88,8 +93,11 @@ export default class RoomList extends Component {
     joinRoom.push({
       uid:UserStore.uid,
       email:UserStore.email,
-      displayName:UserStore.email
+      displayName:UserStore.displayName
     })
+    const joinSettings = Firebase.database().ref().child('Settings').child(roomKey)
+    joinSettings.update({player2DisplayName:UserStore.displayName})
+
     UserStore.joinedRoom = roomKey
     this.listenJoinedRoom()
   }
@@ -97,7 +105,7 @@ export default class RoomList extends Component {
     return(
       <View style={{flexDirection:'row',height:50,width:windowSize.width-40,margin:5,justifyContent:'center'}}>
         <View style={{flex:7,padding:5,justifyContent:'center',alignItems:'center',backgroundColor:'#2ecc71'}}>
-          <Text numberOfLines={1} style={styles.h2}>{rowData.key}</Text>
+          <Text numberOfLines={1} style={styles.h2}>{rowData.creatorDisplayName}</Text>
         </View>
         <View style={{flex:0.3,backgroundColor:'white'}}></View>
         <TouchableOpacity onPress={() => this.joinToRoom(rowData.key)} style={{flex:1.2,justifyContent:'center',alignItems:'center',backgroundColor:'#2980b9'}}>
@@ -156,7 +164,7 @@ export default class RoomList extends Component {
 const styles = StyleSheet.create({
   container: {flex: 1,backgroundColor: '#FFF',},
   content:{flex:1,justifyContent: 'center',alignItems: 'center'},
-  header:{height:50,width:windowSize.width,backgroundColor:'#9b59b6',flexDirection:'row'},
+  header:{height:50,width:windowSize.width,backgroundColor:Color.darkBlue,flexDirection:'row'},
   headerLeft:{flex:1,justifyContent:'center',alignItems:'center'},
   headerMiddle:{flex:4,justifyContent:'center',alignItems:'center'},
   headerRigth:{flex:1,justifyContent:'center',alignItems:'center'},

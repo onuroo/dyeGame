@@ -43,6 +43,19 @@ export default class Root extends Component {
     Firebase.initializeApp(config)
     Firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
+        console.log(user.displayName)
+        if(user.displayName == null){
+          console.log('heree')
+          var userProfile = Firebase.auth().currentUser;
+          if(UserStore.displayName != ""){
+            console.log('hereeeee')
+            userProfile.updateProfile({
+              displayName: UserStore.displayName,
+            })
+          }
+
+        }
+        //console.log(user)
         //Alert.alert('',JSON.stringify(user))
         UserStore.uid = user.uid
         UserStore.email = user.email
