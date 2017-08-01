@@ -21,9 +21,15 @@ import {observer} from 'mobx-react/native';
 @observer
 export default class Home extends Component {
   tester(){
-    const userInfo = Firebase.database().ref().child('Settings/mj7QkCFLTEeElEEiqbpnyU8fRqI2')
+    for(var i = 0 ; i < 10 ; i++){
+      const wordsRef = Firebase.database().ref('Words/' + i).set({
+        correct: 'sadsad' + i,
+        wrong: 'scccvc' + i,
+        id: i
+      });
+    }
 
-    console.log()
+
   }
   routing(routeName){
     this.props.navigation.navigate(routeName)

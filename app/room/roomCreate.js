@@ -59,8 +59,9 @@ export default class RoomCreate extends Component {
     })
   }
   componentWillMount(){
+    console.disableYellowBox = true;
     RoomStore.status = ""
-    this.getWords()
+
   }
   removeCurrentRoom(){
     const myRoom = Firebase.database().ref().child('Rooms').child(UserStore.uid)
@@ -106,25 +107,74 @@ export default class RoomCreate extends Component {
   componentWillUnmount() {
     BackHandler.removeEventListener('backPress');
   }
-  getWords(){
-    const wordsRef = Firebase.database().ref().child('Words')
-    wordsRef.once("value")
-      .then(function(snapshot) {
-        const numChildren = snapshot.numChildren()
-      });
-      var counter = 0
-      while (counter < 5) {
-        counter++
-        console.log('counter:' + counter)
-        wordsRef.startAt("1").once('value', (snapshot) => {
-          snapshot.forEach((child) => {
-            console.log(child.val().correct , child.val().wrong);
-            counter = counter + 1
-            console.log('counter: ' , counter)
-          })
-        });
-      }
+  getWordsPromise(){
+    var promise = new Promise(function(resolve, reject) {
+      var wordsArray = [{correct:"",wrong:''},{correct:"",wrong:''},{correct:"",wrong:''},{correct:"",wrong:''},{correct:"",wrong:''}]
+      var element = {}
+      var correct = ""
+      var wrong = ""
+      const wordsRef = Firebase.database().ref().child('Words')
+      wordsRef.once("value")
+        .then(function(snapshot) {
+          const numChildren = snapshot.numChildren()
 
+          var random1 = Math.floor((Math.random() * numChildren));
+          wordsRef.orderByChild('id').startAt(random1).once('value', (snapshot) => {
+            wordsArray[0].correct = snapshot.val()[random1].correct
+            wordsArray[0].wrong = snapshot.val()[random1].wrong
+            if(wordsArray[0].correct != "" && wordsArray[1].correct != "" && wordsArray[2].correct != "" && wordsArray[3].correct != "" && wordsArray[4].correct != "" && wordsArray[0].correct != ""){
+              resolve(wordsArray)
+            }else if(wordsArray.length > 5){
+              reject('fail')
+            }
+          });
+          var random2 = Math.floor((Math.random() * numChildren));
+
+          wordsRef.orderByChild('id').startAt(random2).once('value', (snapshot) => {
+            wordsArray[1].correct = snapshot.val()[random2].correct
+            wordsArray[1].wrong = snapshot.val()[random2].wrong
+            if(wordsArray[0].correct != "" && wordsArray[1].correct != "" && wordsArray[2].correct != "" && wordsArray[3].correct != "" && wordsArray[4].correct != "" && wordsArray[0].correct != ""){
+              resolve(wordsArray)
+            }else if(wordsArray.length > 5){
+              reject('fail')
+            }
+          });
+          var random3 = Math.floor((Math.random() * numChildren));
+
+          wordsRef.orderByChild('id').startAt(random3).once('value', (snapshot) => {
+            wordsArray[2].correct = snapshot.val()[random3].correct
+            wordsArray[2].wrong = snapshot.val()[random3].wrong
+            if(wordsArray[0].correct != "" && wordsArray[1].correct != "" && wordsArray[2].correct != "" && wordsArray[3].correct != "" && wordsArray[4].correct != "" && wordsArray[0].correct != ""){
+              resolve(wordsArray)
+            }else if(wordsArray.length > 5){
+              reject('fail')
+            }
+          });
+          var random4 = Math.floor((Math.random() * numChildren));
+
+          wordsRef.orderByChild('id').startAt(random4).once('value', (snapshot) => {
+            wordsArray[3].correct = snapshot.val()[random4].correct
+            wordsArray[3].wrong = snapshot.val()[random4].wrong
+            if(wordsArray[0].correct != "" && wordsArray[1].correct != "" && wordsArray[2].correct != "" && wordsArray[3].correct != "" && wordsArray[4].correct != "" && wordsArray[0].correct != ""){
+              resolve(wordsArray)
+            }else if(wordsArray.length > 5){
+              reject('fail')
+            }
+          });
+          var random5 = Math.floor((Math.random() * numChildren));
+
+          wordsRef.orderByChild('id').startAt(random5).once('value', (snapshot) => {
+            wordsArray[4].correct = snapshot.val()[random5].correct
+            wordsArray[4].wrong = snapshot.val()[random5].wrong
+            if(wordsArray[0].correct != "" && wordsArray[1].correct != "" && wordsArray[2].correct != "" && wordsArray[3].correct != "" && wordsArray[4].correct != "" && wordsArray[0].correct != ""){
+              resolve(wordsArray)
+            }else if(wordsArray.length > 5){
+              reject('fail')
+            }
+          });
+        });
+    })
+    return promise
   }
   start(){
     if(RoomStore.createdRoomList.length > 1){
@@ -133,30 +183,28 @@ export default class RoomCreate extends Component {
       .then((responseJson) => {
         const serverTime = responseJson.timestamp;
         const myRoomSettings = Firebase.database().ref().child('Settings').child(UserStore.uid)
-        let wordList = [
-          {wrong:'etaherk',correct:'hareket'},
-          {wrong:'atlıkash',correct:'hastalık'},
-          {wrong:'üeseitvinr',correct:'üniversite'},
-          {wrong:'ımulklan',correct:'kullanım'},
-          {wrong:'ullkromusu',correct:'sorumluluk'}
-        ]
-        let roundOfPlayersList = [
-          {round:1},
-          {player1:0},
-          {player2:0},
-        ]
-        let arrayWithID = []
-        for(var i = 0 ; i < 5 ; i++){
-          arrayWithID.push({id:i,wrong:wordList[i].wrong,correct:wordList[i].correct})
-          if(i == 4){
-            BoardStore.currentRound = 0
-            myRoomSettings.update({wordsOfRoom:arrayWithID})
-            myRoomSettings.update({round:roundOfPlayersList})
-            myRoomSettings.update({createdTime:serverTime})
-            const myRoom = Firebase.database().ref().child('Rooms').child(UserStore.uid).child(UserStore.uid).child(UserStore.createdRoomKey)
-            myRoom.update({status:'active'})
+        this.getWordsPromise().then(function(wordList) {
+          console.log('result of promise:' , wordList);
+          let roundOfPlayersList = [
+            {round:1},
+            {player1:0},
+            {player2:0},
+          ]
+          let arrayWithID = []
+          for(var i = 0 ; i < 5 ; i++){
+            arrayWithID.push({id:i,wrong:wordList[i].wrong,correct:wordList[i].correct})
+            if(i == 4){
+              BoardStore.currentRound = 0
+              myRoomSettings.update({wordsOfRoom:arrayWithID})
+              myRoomSettings.update({round:roundOfPlayersList})
+              myRoomSettings.update({createdTime:serverTime})
+              const myRoom = Firebase.database().ref().child('Rooms').child(UserStore.uid).child(UserStore.uid).child(UserStore.createdRoomKey)
+              myRoom.update({status:'active'})
+            }
           }
-        }
+        }, function(err) {
+          console.log('error of promise:' , err);
+        });
       })
       .catch((error) => {
         console.error(error);
