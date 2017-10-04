@@ -9,7 +9,8 @@ import {
   Dimensions,
   Alert,
   AppState,
-  StatusBar
+  StatusBar,
+  Image
 } from 'react-native';
 import {StackNavigator} from 'react-navigation'
 import Databases from './realmDB/databases';
@@ -18,6 +19,8 @@ import ResultStore from './stores/result'
 import Color from './const/colors'
 const windowSize = Dimensions.get('window');
 import {observer} from 'mobx-react/native';
+import Images from './assets/images/images';
+
 @observer
 export default class Home extends Component {
   tester(){
@@ -58,6 +61,7 @@ export default class Home extends Component {
           backgroundColor= {Color.statusBarColor}
           barStyle="light-content"
         />
+        <Image source={Images.bg} style={{position:'absolute',resizeMode:'stretch',width:windowSize.width,height:windowSize.height,left:0,top:0}} /> 
         <View style={styles.header}>
          <View style={styles.headerLeft}></View>
          <View style={styles.headerMiddle}>

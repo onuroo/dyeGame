@@ -23,4 +23,6 @@ export const Routes = {
   results: {screen: Results},
 
   statistic: {screen: Statistic},
+  
+  
 }

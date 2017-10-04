@@ -3,6 +3,8 @@ const images = {
   winner: require('./icons/winner.png'),
   loser: require('./icons/loser.png'),
   leftArrow: require('./icons/leftArrow.png'),
+  bg: require('./bg.jpg'),
+  
 
 }
 export default images
